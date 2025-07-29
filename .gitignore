@@ -1,0 +1,6 @@
+#Ignored Directories
+node_modules/
+.vscode/
+public/
+.prettierrc
+
