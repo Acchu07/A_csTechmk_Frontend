@@ -34,3 +34,5 @@ function renderError(type: string, label: string) {
       return null;
   }
 }
+
+// Maybe use Zod instead of the inbuilt validators that way same validation for front and back and access to more validators

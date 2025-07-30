@@ -5,10 +5,7 @@ import getData from "../fetchApi";
 import { loginURL } from "../urls";
 import type { UserLogin, isLoggedIN } from "../types/alltypes";
 import InputField from "./InputComponent";
-
-const requiredParameters: { minLength: number } = {
-  minLength: 5,
-};
+import formRestrictions from "../formRestrictions";
 
 export default function LoginPage({ setIsLoggedIn }: isLoggedIN) {
   const [isLoading, setIsLoading] = useState(false);
@@ -25,11 +22,13 @@ export default function LoginPage({ setIsLoggedIn }: isLoggedIN) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
+      credentials: "include",
     });
     const jsonReceived = await getData(request);
     console.log(jsonReceived);
     jsonReceived && setIsLoggedIn(true);
-    jsonReceived ?? alert("Invalid Credentials"); // ToDo: Show Error Message using state and setTimeout
+    jsonReceived ??
+      alert("Invalid Credentials || Not In DB || Or Server Not Reachable"); // ToDo: Show Error Message using state and setTimeout
     setIsLoading(false);
   };
 
@@ -42,7 +41,10 @@ export default function LoginPage({ setIsLoggedIn }: isLoggedIN) {
         label="Email"
         type="email"
         register={register}
-        restrictions={{ required: true, pattern: /^[^\s@]+@[^\s@]+\.com$/ }}
+        restrictions={{
+          required: true,
+          pattern: formRestrictions.patternEmail,
+        }}
         error={errors.email}
       />
 
@@ -53,11 +55,13 @@ export default function LoginPage({ setIsLoggedIn }: isLoggedIN) {
         register={register}
         restrictions={{
           required: true,
-          minLength: requiredParameters.minLength,
+          minLength: formRestrictions.minLengthPassword,
         }}
         error={errors.password}
       />
-      <button type="submit">Submit</button>
+      <button type="submit" disabled={isLoading}>
+        {isLoading ? "Logging In..." : "Log In"}
+      </button>
     </form>
   );
 }

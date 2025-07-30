@@ -18,4 +18,19 @@ type InputField = {
   error?: FieldError;
 };
 
-export type { UserLogin, isLoggedIN, InputField };
+type AgentForm = {
+  name: string;
+  email: string;
+  countryCode: string;
+  mobile: string;
+  password: string;
+};
+
+interface formRestrictions {
+  patternMobileNumber: RegExp;
+  patternEmail: RegExp;
+  minLengthMobileNumber: number;
+  minLengthPassword: number;
+}
+
+export type { UserLogin, isLoggedIN, InputField, AgentForm, formRestrictions };
