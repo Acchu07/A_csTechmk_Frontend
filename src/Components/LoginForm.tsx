@@ -9,6 +9,7 @@ import formRestrictions from "../formRestrictions";
 
 export default function LoginPage({ setIsLoggedIn }: isLoggedIN) {
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const {
     register,
@@ -24,44 +25,48 @@ export default function LoginPage({ setIsLoggedIn }: isLoggedIN) {
       body: JSON.stringify(data),
       credentials: "include",
     });
-    const jsonReceived = await getData(request);
-    console.log(jsonReceived);
-    jsonReceived && setIsLoggedIn(true);
-    jsonReceived ??
-      alert("Invalid Credentials || Not In DB || Or Server Not Reachable"); // ToDo: Show Error Message using state and setTimeout
+    const dataReceived = await getData(request);
     setIsLoading(false);
+    if (dataReceived?.status === 200) {
+      setIsLoggedIn(true);
+    } else {
+      setErrorMessage(dataReceived.data.message);
+    }
   };
 
   return isLoading ? (
     <p>Checking With Server...</p>
   ) : (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <InputField
-        name="email"
-        label="Email"
-        type="email"
-        register={register}
-        restrictions={{
-          required: true,
-          pattern: formRestrictions.patternEmail,
-        }}
-        error={errors.email}
-      />
+    <>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <InputField
+          name="email"
+          label="Email"
+          type="email"
+          register={register}
+          restrictions={{
+            required: true,
+            pattern: formRestrictions.patternEmail,
+          }}
+          error={errors.email}
+        />
 
-      <InputField
-        name="password"
-        label="Password"
-        type="password"
-        register={register}
-        restrictions={{
-          required: true,
-          minLength: formRestrictions.minLengthPassword,
-        }}
-        error={errors.password}
-      />
-      <button type="submit" disabled={isLoading}>
-        {isLoading ? "Logging In..." : "Log In"}
-      </button>
-    </form>
+        <InputField
+          name="password"
+          label="Password"
+          type="password"
+          register={register}
+          restrictions={{
+            required: true,
+            minLength: formRestrictions.minLengthPassword,
+          }}
+          error={errors.password}
+        />
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? "Logging In..." : "Log In"}
+        </button>
+      </form>
+      {errorMessage && <p>{errorMessage}</p>}
+    </>
   );
 }

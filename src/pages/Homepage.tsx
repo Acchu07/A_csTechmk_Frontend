@@ -8,10 +8,7 @@ function Homepage() {
   return (
     <div>
       {isLoggedIn ? (
-        <HomePageDashBoard
-          isLoggedIn={isLoggedIn}
-          setIsLoggedIn={setIsLoggedIn}
-        />
+        <HomePageDashBoard isLoggedIn={isLoggedIn} />
       ) : (
         <LoginPage setIsLoggedIn={setIsLoggedIn} />
       )}
