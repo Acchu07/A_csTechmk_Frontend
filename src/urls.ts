@@ -1,4 +1,4 @@
-const baseURL = "http://localhost:3000/"; // Modify this to your Front End URL
+const baseURL = "http://localhost:3000/"; // Modify this to the port you chose
 
 const loginURL = `${baseURL}api/auth/login`;
 const createAgentURL = `${baseURL}api/agent/createAgent`;
