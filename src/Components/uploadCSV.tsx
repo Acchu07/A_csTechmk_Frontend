@@ -3,11 +3,19 @@ import { useState } from "react";
 import getData from "../fetchApi";
 import { uploadCSVURL } from "../urls";
 
+enum ComponentClicked {
+  LatestCSV,
+  AGENTS,
+  CSV,
+}
+
 // type array of objects
 export default function CSV({
   setDisplayDistributedList,
+  setComponentClicked,
 }: {
   setDisplayDistributedList: (agentsWithTasks: any) => void;
+  setComponentClicked: (componentClicked: number) => void;
 }) {
   const [isDisabled, setIsDisabled] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
@@ -17,17 +25,18 @@ export default function CSV({
     if (!event.target.files?.[0]) return;
     const isCSV = await checkIfCSV(event.target.files[0]);
     if (isCSV) {
-      setIsDisabled(!isDisabled);
+      setIsDisabled(false);
       setErrorMessage("");
       setFile(event.target.files[0]);
     } else {
+      setIsDisabled(true);
       setErrorMessage("File is not a CSV Please upload a CSV");
     }
   }
 
   async function handleSubmitFile(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setIsDisabled(!isDisabled);
+    setIsDisabled(true);
     const form = new FormData();
     if (!file) return;
     form.append("csvfile", file);
@@ -39,32 +48,33 @@ export default function CSV({
     const jsonReceived = await getData(request);
 
     if (jsonReceived?.status === 200) {
+      setComponentClicked(ComponentClicked.LatestCSV);
       setDisplayDistributedList(jsonReceived.data.agentsWithTasks);
     } else {
       setErrorMessage(jsonReceived.data.message);
     }
-    jsonReceived ??
-      alert("Invalid Credentials || Not In DB || Or Server Not Reachable"); // ToDo: Show Error Message using state and setTimeout
+    setIsDisabled(false);
   }
 
   return (
     <>
-      <h1>CSV</h1>
-      <form onSubmit={handleSubmitFile}>
-        <label htmlFor="csv">Upload CSV</label>
-        <input
-          name="csvfile"
-          type="file"
-          accept="text/csv"
-          id="csv"
-          onChange={handleFileChange}
-        />
-        {errorMessage && <p>{errorMessage}</p>}
-        <button disabled={isDisabled} type="submit">
-          Upload
-        </button>
-      </form>
-      {errorMessage && <p>{errorMessage}</p>}
+      <div className="form-container">
+        <form onSubmit={handleSubmitFile}>
+          <label htmlFor="csv">Upload CSV</label>
+          <input
+            className="btn"
+            name="csvfile"
+            type="file"
+            accept="text/csv"
+            id="csv"
+            onChange={handleFileChange}
+          />
+          {errorMessage && <p className="error-text">{errorMessage}</p>}
+          <button className="btn" disabled={isDisabled} type="submit">
+            Upload
+          </button>
+        </form>
+      </div>
     </>
   );
 }

@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+@layer components {
+  .input-field,
+  .btn,
+  .label,
+  .error-text {
+    @apply m-1 px-4 py-2;
+  }
+}
+
+.input-field {
+  @apply w-fit rounded border border-gray-300 bg-white text-gray-900;
+}
+
+.btn {
+  @apply bg-indigo-600 text-white hover:bg-indigo-700;
+}
+
+.btn:disabled,
+.btn:disabled:hover {
+  @apply cursor-not-allowed bg-gray-400;
+}
+
+.error-text {
+  @apply text-center font-bold text-red-500;
+}
+
+.label {
+  @apply font-medium text-gray-700;
+}
+
+.inputField-container {
+  @apply flex flex-col flex-wrap gap-2;
+}
+
+.form-container {
+  @apply flex h-full items-center justify-center;
+}
+
+.parent-container {
+  @apply h-full w-full;
+}
+
+.nav-bar-1 {
+  @apply flex flex-wrap justify-between p-4 shadow;
+}
+
+.nav-bar-2 {
+  @apply flex flex-col flex-wrap justify-between p-4 shadow;
+}

@@ -5,6 +5,11 @@ export default async function getData(request: Request) {
     return { status: response.status, data };
   } catch (error) {
     console.log(error);
-    return { status: 0, data: "Server Not Reachable" };
+    return {
+      data: {
+        status: 0,
+        message: "Server Not Reachable check if server is up",
+      },
+    };
   }
 }

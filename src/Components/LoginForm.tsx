@@ -27,7 +27,7 @@ export default function LoginPage({ setIsLoggedIn }: isLoggedIN) {
     });
     const dataReceived = await getData(request);
     setIsLoading(false);
-    if (dataReceived?.status === 200) {
+    if (dataReceived.status === 200) {
       setIsLoggedIn(true);
     } else {
       setErrorMessage(dataReceived.data.message);
@@ -37,8 +37,11 @@ export default function LoginPage({ setIsLoggedIn }: isLoggedIN) {
   return isLoading ? (
     <p>Checking With Server...</p>
   ) : (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <div className="form-container">
+      <form
+        className="flex h-5 flex-wrap justify-center"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <InputField
           name="email"
           label="Email"
@@ -62,11 +65,15 @@ export default function LoginPage({ setIsLoggedIn }: isLoggedIN) {
           }}
           error={errors.password}
         />
-        <button type="submit" disabled={isLoading}>
+        <button className="btn" type="submit" disabled={isLoading}>
           {isLoading ? "Logging In..." : "Log In"}
         </button>
+        {errorMessage && (
+          <div className="error-text flex items-center" role="alert">
+            {errorMessage}
+          </div>
+        )}
       </form>
-      {errorMessage && <p>{errorMessage}</p>}
-    </>
+    </div>
   );
 }

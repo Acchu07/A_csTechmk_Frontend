@@ -1,5 +1,6 @@
 import type { InputField } from "../types/alltypes";
 
+// Reusable Input Component for Forms whose Field Type is textual in nature
 export default function InputField({
   name,
   label,
@@ -9,9 +10,12 @@ export default function InputField({
   error,
 }: InputField) {
   return (
-    <div>
-      <label htmlFor={name}>{label}</label>
+    <div className="inputField-container">
+      <label className="label" htmlFor={name}>
+        {label}
+      </label>
       <input
+        className="input-field"
         id={name}
         type={type}
         {...register(name, restrictions)}
@@ -21,15 +25,27 @@ export default function InputField({
     </div>
   );
 }
-
+// Function to render error messages based on the type of error - To be extended depending on error
 function renderError(type: string, label: string) {
   switch (type) {
     case "required":
-      return <p role="alert">{label} is required</p>;
+      return (
+        <p className="error-text" role="alert">
+          {label} is required
+        </p>
+      );
     case "pattern":
-      return <p role="alert">{label} is invalid</p>;
+      return (
+        <p className="error-text" role="alert">
+          {label} is invalid
+        </p>
+      );
     case "minLength":
-      return <p role="alert">{label} is too short</p>;
+      return (
+        <p className="error-text" role="alert">
+          {label} is too short
+        </p>
+      );
     default:
       return null;
   }

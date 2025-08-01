@@ -8,6 +8,7 @@ enum ComponentClicked {
   CSV,
 }
 
+// Home Page Post Successful Login
 function HomePageDashBoard({ isLoggedIn }: { isLoggedIn: boolean }) {
   const [componentClicked, setComponentClicked] = useState(
     ComponentClicked.LatestCSV,
@@ -15,23 +16,37 @@ function HomePageDashBoard({ isLoggedIn }: { isLoggedIn: boolean }) {
   const [displayDistributedList, setDisplayDistributedList] = useState([]);
 
   return (
-    <div>
-      <button onClick={() => setComponentClicked(ComponentClicked.LatestCSV)}>
-        LatestCSV
-      </button>
-      <button onClick={() => setComponentClicked(ComponentClicked.AGENTS)}>
-        Agents
-      </button>
-      <button onClick={() => setComponentClicked(ComponentClicked.CSV)}>
-        CSV
-      </button>
+    <div className="parent-container">
+      <nav className="nav-bar-1">
+        <button
+          className="btn"
+          onClick={() => setComponentClicked(ComponentClicked.LatestCSV)}
+        >
+          LatestCSV
+        </button>
+        <button
+          className="btn"
+          onClick={() => setComponentClicked(ComponentClicked.AGENTS)}
+        >
+          Agents
+        </button>
+        <button
+          className="btn"
+          onClick={() => setComponentClicked(ComponentClicked.CSV)}
+        >
+          CSV
+        </button>
+      </nav>
 
       {isLoggedIn && componentClicked === ComponentClicked.LatestCSV && (
         <LatestCSV displayDistributedList={displayDistributedList} />
       )}
       {isLoggedIn && componentClicked === ComponentClicked.AGENTS && <Agents />}
       {isLoggedIn && componentClicked === ComponentClicked.CSV && (
-        <CSV setDisplayDistributedList={setDisplayDistributedList} />
+        <CSV
+          setDisplayDistributedList={setDisplayDistributedList}
+          setComponentClicked={setComponentClicked}
+        />
       )}
       {/* Add Proper Log Out Functionality && Clear Cookies Both Ends */}
       {/* <button onClick={() => setIsLoggedIn(false)}>Logout</button> */}

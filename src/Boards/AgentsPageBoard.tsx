@@ -9,15 +9,26 @@ enum feature {
 function Agents() {
   const [featureClicked, setFeatureClicked] = useState(feature.CREATEAGENT);
   return (
-    <div>
-      <button onClick={() => setFeatureClicked(feature.CREATEAGENT)}>
-        {feature.CREATEAGENT}
-      </button>
-      <button onClick={() => setFeatureClicked(feature.FEATURETWO)}>
-        {feature.FEATURETWO}
-      </button>
-      {featureClicked === feature.CREATEAGENT && <Feature1 />}
-      {featureClicked === feature.FEATURETWO && <Feature2 />}
+    <div className="nav-bar-2">
+      <div>
+        <button
+          className="btn"
+          onClick={() => setFeatureClicked(feature.CREATEAGENT)}
+        >
+          {feature.CREATEAGENT}
+        </button>
+        <button
+          className="btn"
+          onClick={() => setFeatureClicked(feature.FEATURETWO)}
+        >
+          {feature.FEATURETWO}
+        </button>
+      </div>
+
+      <div>
+        {featureClicked === feature.CREATEAGENT && <Feature1 />}
+        {featureClicked === feature.FEATURETWO && <Feature2 />}
+      </div>
     </div>
   );
 }
